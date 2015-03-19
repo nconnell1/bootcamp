@@ -2,10 +2,11 @@
 % 1D example
 x = MedData.Age;
 y = MedData.BPDiff; %Pulse Pressure
-modelCoeffs = fitQuadModel(x,y)
+modelCoeffs = fitQuadModel(x,y); %#ok<*NASGU>
 
 % Test for the 2D example
+
 height = MedData.Height; % x1
 waist = MedData.Waist;   % x2
 weight = MedData.Weight; % y
-modelCoeffs = fitQuadModel([height, waist], weight)
+modelCoeffs = fitQuadModel([height, waist], weight);

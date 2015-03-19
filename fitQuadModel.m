@@ -3,6 +3,28 @@ function [ modelCoeffs ] = fitQuadModel( X, y )
 % X can be either a 1 or 2 column matrix, y is a matrix
 % See also surf, meshgrid, linspace, ones.
 
+narginchk(2,2)
+
+% Validate X 
+validateattributes(X, {'double'}, {'2d', 'real','nonempty'})
+if size(X,2) >= 3
+    error('fitQuadModel:TooManyCols', 'X must have one or two columns.')
+end % if
+if any(isinf(X(:)))
+    error('fitQuadModel:InfValues', 'X cannot contain Inf or -Inf')
+end % if
+
+% Exercise: write the checking code for y
+% Validate y
+validateattributes(y, {'double'}, ...
+    {'column', 'real','nonempty','numel', size(X,1)})
+if any(isinf(y) )
+    error('fitQuadModel:InfValues', 'y cannot contain Inf or -Inf')
+end % if
+% if size(y) ~= size(X,1)
+%     error('fitQuadModel:SizeInputs','Size of y must be equal to the number of rows in X')
+% end % if
+
 % Clean the data.
 [XClean, yClean] = removeNANs(X,y);
 
@@ -17,7 +39,7 @@ end % fitQuadModel
 
 function [XClean, yClean] = removeNANs(X,y)
 
-missingVals = any([X,y],2);
+missingVals = any(isnan([X,y]),2);
 XClean = X(~missingVals, :);
 yClean = y(~missingVals);
 
@@ -35,12 +57,12 @@ switch nVars
     otherwise
         error('fitQuadModel:WrongNumberOfVars', ...
             'X must have one or two columns.')
-    end %switch/case
+end %switch/case
 
 modelCoeffs = A\yClean;
 
 end % fitModel
 
-function visResults(X, y, XClean, modelCoeffs)
+function visResults(X, y, XClean, modelCoeffs) %#ok<INUSD,DEFNU>
 
 end % visResults
